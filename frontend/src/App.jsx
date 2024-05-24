@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+const BASE_URL= import.meta.env.DEV ? 'http://localhost:8080/api/todos'
+: "https://todos-backend-qm94.onrender.com/api/todos" 
 
 function App() {
   const [isLoading, setIsLoading] = useState(false)
@@ -11,7 +13,7 @@ function App() {
     async function getTodos() {
       try {
         setIsLoading(true)
-        const response = await fetch('http://localhost:8080/api/todos');
+        const response = await fetch(BASE_URL);
         const data = await response.json();
         console.log(data)
         setTodos(data)
@@ -38,7 +40,7 @@ function App() {
     // console.log(body, JSON.stringify(body))
     try {
       setIsLoading(true)
-      const response = await fetch('http://localhost:8080/api/todos', {
+      const response = await fetch(BASE_URL, {
         method: 'POST',
         body: JSON.stringify(body), //turn object to string
         headers: {
@@ -63,7 +65,7 @@ function App() {
   async function handleDelete(id) {
 try {
   setIsLoading(true)
-  await fetch(`http://localhost:8080/api/todos/${id}`, {
+  await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE"
   })
   setTodos(todos.filter((todo)=> todo._id !== id))
